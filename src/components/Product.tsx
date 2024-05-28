@@ -13,6 +13,9 @@ interface ProductProps {
 
 async function getImage(imageUrl: string) {
   try {
+    if(imageUrl === null){
+      return ""
+    }
     const res = await fetch(`http://localhost:8080${imageUrl}`, { cache: 'no-store' });
     if (!res.ok) {
       throw new Error('Failed to fetch data');
