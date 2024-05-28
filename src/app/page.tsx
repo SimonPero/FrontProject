@@ -1,6 +1,5 @@
 import Product from "@/components/Product";
 import Link from "next/link"; // Ajuste la importación de 'next/link'
-import { Key } from "react";
 
 async function getData() {
   const res = await fetch('http://localhost:8080/api/products', { cache: 'no-store' });
