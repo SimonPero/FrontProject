@@ -37,7 +37,7 @@ export default async function Home() {
         )}
       </div>
       <div>
-        <Link href="/pages/productManagement">Product Management</Link>
+        <Link href="/productManagement">Product Management</Link>
       </div>
     </main>
   );
