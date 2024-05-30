@@ -1,4 +1,4 @@
-import Product from "@/components/Product";
+import Product from "../components/Product";
 import Link from "next/link"; // Ajuste la importación de 'next/link'
 
 async function getData() {

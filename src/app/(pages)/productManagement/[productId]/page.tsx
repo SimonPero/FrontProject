@@ -1,5 +1,5 @@
-import Product from "@/components/Product";
-import ProdModifyForm from "@/components/ProdModifyForm";
+import Product from "../../../../../components/Product";
+import ProdModifyForm from "../../../../../components/ProdModifyForm";
 
 async function getData(id:string) {
     const res = await fetch(`http://localhost:8080/api/products/${id}`, { cache: 'no-store' });

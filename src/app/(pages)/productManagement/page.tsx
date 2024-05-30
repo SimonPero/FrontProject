@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import ProductForm from '@/components/ProductForm';
-import Product from '@/components/Product';
+import ProductForm from '../../../../components/ProductForm';
+import Product from '../../../../components/Product';
 import Link from 'next/link';
 
 async function getData() {
