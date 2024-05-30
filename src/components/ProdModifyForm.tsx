@@ -52,13 +52,9 @@ const ProdModifyForm: React.FC<ProductProps> = ({ category, name, description, s
         body: data,
         cache: 'no-store'
       });
-
       if (!response.ok) {
         throw new Error('Failed to submit the form');
       }
-      
-      const responseData = await response.json();
-      console.log('Product updated:', responseData);
     } catch (error) {
       console.error('Error submitting form:', error);
     }

@@ -16,9 +16,6 @@ export default function ProductForm() {
     if (!response.ok) {
       throw new Error('Failed to submit the form');
     }
-
-    const data = await response.json();
-    console.log('Product added:', data);
   }
 
   return (
