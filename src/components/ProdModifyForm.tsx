@@ -46,7 +46,6 @@ const ProdModifyForm: React.FC<ProductProps> = ({ category, name, description, s
     if (formData.image) {
       data.append('image', formData.image);
     }
-
     try {
       const response = await fetch(`http://localhost:8080/api/products/${id}`, {
         method: 'PUT',
@@ -57,7 +56,7 @@ const ProdModifyForm: React.FC<ProductProps> = ({ category, name, description, s
       if (!response.ok) {
         throw new Error('Failed to submit the form');
       }
-
+      
       const responseData = await response.json();
       console.log('Product updated:', responseData);
     } catch (error) {
