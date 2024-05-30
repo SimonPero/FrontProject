@@ -14,7 +14,7 @@ export default async function Home() {
   const data = await getData();
   return (
     <main>
-      <div>
+      <div className="space-y-4 m-5">
         {data.length > 0 ? (
           data.map((product: {
             imageUrl: string; id: string; category: string; name: string; description: string; size: string; price: number; stock: number;

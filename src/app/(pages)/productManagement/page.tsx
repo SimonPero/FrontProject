@@ -1,6 +1,8 @@
-import React, { useState } from 'react';
-import ProductForm from '../../../../components/ProductForm';
-import Product from '../../../../components/Product';
+import React from 'react';
+import { Form } from '@/components/ui/form';
+import ProductForm from '../../../components/ProductForm';
+import Product from '../../../components/Product';
+import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 
 async function getData() {
@@ -16,24 +18,31 @@ async function getData() {
 export default async function Page() {
     const data = await getData();
     return (
-        <section className='grid-cols-2'>
+        <section className="space-y-4 m-5">
             <ProductForm />
-            <section>
-                    {data.length > 0 ? (
-                        data.map((product: {
-                            imageUrl: string; id: string; category: string; name: string; description: string; size: string; price: number; stock: number;
-                        }) => (
-                            <article key={product.id } className='product-item'>
-                            <Product {...product}/>
-                            <Link href={`/productManagement/${product.id}`}>
-                                MODIFICAR
-                            </Link>
+                {data.length > 0 ? (
+                    data.map((product: {
+                        imageUrl: string; id: string; category: string; name: string; description: string; size: string; price: number; stock: number;
+                    }) => (
+                        <article key={product.id} >
+                            <Product {...product} />
+                            <div className='space-x-2'>
+                                <Button asChild>
+                                    <Link href={`/productManagement/${product.id}`}>
+                                        MODIFICAR
+                                    </Link>
+                                </Button>
+                                <Button asChild>
+                                    <Link href={`/productManagement/${product.id}`}>
+                                        ELIMINAR
+                                    </Link>
+                                </Button>
+                            </div>
                         </article>
-                        ))
-                    ) : (
-                        <p>No products available.</p>
-                    )}
-            </section>
+                    ))
+                ) : (
+                    <p>No products available.</p>
+                )}
         </section>
     );
 }

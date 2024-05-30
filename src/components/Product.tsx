@@ -1,4 +1,12 @@
 import React from 'react';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card"
 
 interface ProductProps {
   category: string;
@@ -13,7 +21,7 @@ interface ProductProps {
 
 async function getImage(imageUrl: string) {
   try {
-    if(imageUrl === null){
+    if (imageUrl === null) {
       return ""
     }
     const res = await fetch(`http://localhost:8080${imageUrl}`, { cache: 'no-store' });
@@ -28,18 +36,24 @@ async function getImage(imageUrl: string) {
   }
 }
 
-const Product: React.FC<ProductProps> = async ({ category, name, description, size, price, stock, imageUrl, id}) => {
+const Product: React.FC<ProductProps> = async ({ category, name, description, size, price, stock, imageUrl, id }) => {
   const img = await getImage(imageUrl);
   return (
-    <div className="product" id={id}>
-      <img src={img} alt={description} />
-      <h2>{name}</h2>
-      <p>{description}</p>
-      <p><strong>Category:</strong> {category}</p>
-      <p><strong>Size:</strong> {size}</p>
-      <p><strong>Price:</strong> ${price}</p>
-      <p><strong>Stock:</strong> {stock}</p>
-    </div>
+    <Card id={id} className="bg-gray-500">
+    <CardHeader>
+      <CardTitle>{name}</CardTitle>
+    </CardHeader>
+    <CardContent className="relative h-64 md:h-96">
+      <img className="absolute top-0 left-0 w-full h-full object-cover rounded-sm" src={img} alt={description} />
+    </CardContent>
+    <CardFooter>
+      <div className="flex flex-col space-z-2">
+        <p><strong>Size:</strong> {size}</p>
+        <p><strong>Price:</strong> ${price}</p>
+        <p><strong>Stock:</strong> {stock}</p>
+      </div>
+    </CardFooter>
+  </Card>
   );
 };
 
