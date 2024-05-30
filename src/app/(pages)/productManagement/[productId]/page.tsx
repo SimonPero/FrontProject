@@ -1,4 +1,5 @@
 import Product from "@/components/Product";
+import ProdModifyForm from "@/components/ProdModifyForm";
 
 async function getData(id:string) {
     const res = await fetch(`http://localhost:8080/api/products/${id}`, { cache: 'no-store' });
@@ -19,6 +20,9 @@ export default async function ProductModify({
     return (
         <section className=''>
           <Product {...data}/>
+          <section>
+            <ProdModifyForm {...data}/>
+          </section>
         </section>
     );
 }

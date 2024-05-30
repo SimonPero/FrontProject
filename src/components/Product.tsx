@@ -8,7 +8,7 @@ interface ProductProps {
   price: number;
   stock: number;
   imageUrl: string;
-  productID: string;
+  id: string;
 }
 
 async function getImage(imageUrl: string) {
@@ -28,10 +28,10 @@ async function getImage(imageUrl: string) {
   }
 }
 
-const Product: React.FC<ProductProps> = async ({ category, name, description, size, price, stock, imageUrl, productID}) => {
+const Product: React.FC<ProductProps> = async ({ category, name, description, size, price, stock, imageUrl, id}) => {
   const img = await getImage(imageUrl);
   return (
-    <div className="product" id={productID}>
+    <div className="product" id={id}>
       <img src={img} alt={description} />
       <h2>{name}</h2>
       <p>{description}</p>

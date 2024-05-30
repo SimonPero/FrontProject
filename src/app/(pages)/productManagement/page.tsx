@@ -24,16 +24,7 @@ export default async function Page() {
                             imageUrl: string; id: string; category: string; name: string; description: string; size: string; price: number; stock: number;
                         }) => (
                             <article key={product.id } className='product-item'>
-                            <Product
-                                category={product.category}
-                                name={product.name}
-                                description={product.description}
-                                size={product.size}
-                                price={product.price}
-                                stock={product.stock}
-                                imageUrl={product.imageUrl}
-                                productID={product.id}
-                            />
+                            <Product {...product}/>
                             <Link href={`/productManagement/${product.id}`}>
                                 MODIFICAR
                             </Link>

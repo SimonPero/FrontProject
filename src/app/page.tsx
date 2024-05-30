@@ -17,19 +17,9 @@ export default async function Home() {
       <div>
         {data.length > 0 ? (
           data.map((product: {
-            imageUrl: string; productID: string; category: string; name: string; description: string; size: string; price: number; stock: number;
+            imageUrl: string; id: string; category: string; name: string; description: string; size: string; price: number; stock: number;
           }) => (
-            <Product
-              key={product.productID}
-              category={product.category}
-              name={product.name}
-              description={product.description}
-              size={product.size}
-              price={product.price}
-              stock={product.stock}
-              imageUrl={product.imageUrl}
-              productID={product.productID}
-            />
+            <Product key={product.id}{...product} />
           ))
         ) : (
           <p>No products available.</p>
