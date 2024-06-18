@@ -18,7 +18,7 @@ const DeleteButton: React.FC<DeleteButtonProps> = ({ productId }) => {
 
     return (
         <Button onClick={handleClick}>
-            Eliminar
+            ELIMINAR
         </Button>
     );
 }
