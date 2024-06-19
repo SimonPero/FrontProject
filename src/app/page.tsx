@@ -21,6 +21,7 @@ export default async function Home() {
         </div>
         <div>
           <Link href="/productManagement">Product Management</Link>
+          <Link href="/loging"> Please Log In</Link>
         </div>
       </main>
   );
