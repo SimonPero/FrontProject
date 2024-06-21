@@ -1,12 +1,14 @@
 import Product from "../components/products/Product";
 import Link from "next/link";
 import ProductApi from "@/api/productApi";
+import PreviousPathnameProvider from "@/components/contexts/goBackContext";
 const productApi = new ProductApi();
 
 export default async function Home() {
   const data = await productApi.getData();
 
   return (
+    <PreviousPathnameProvider>
       <main>
         <div className="space-y-4 m-5">
           {data.length > 0 ? (
@@ -21,8 +23,8 @@ export default async function Home() {
         </div>
         <div>
           <Link href="/productManagement">Product Management</Link>
-          <Link href="/loging"> Please Log In</Link>
         </div>
       </main>
+    </PreviousPathnameProvider>
   );
 }
