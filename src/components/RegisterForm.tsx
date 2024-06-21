@@ -1,6 +1,5 @@
 "use client"
 import { Button } from "./ui/button"
-import { doSocialLogin, doSocialRegister } from "@/app/actions"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "./ui/form";
 import { Input } from "./ui/input";
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -128,21 +127,11 @@ export function RegisterForm() {
                     )}
                 />
                 <Button type="submit">Submit</Button>
+
+                <p className="text-center text-sm text-gray-600 mt-2">Do you already have an account? please&nbsp;
+                    <Link className="text-blue-500 hove:underline" href={"/signIn"}>Sing In</Link>
+                </p>
             </form>
-            <div className="mx-auto my-4 flex w-full items-center justify-evenly before:mr-4 before:block before:h-px before:flex-grow before:bg-stone-400 after:ml-4 after:block after:h-px after:flex-grow after:bg-stone-400">
-                Or
-            </div>
-
-            <form action={doSocialRegister}>
-                <Button type="submit" name="action" value="google" className="mx-auto my-4 flex w-full items-center justify-evenly">
-                    Sign Up With Google
-                </Button>
-            </form>
-
-            <p className="text-center text-sm text-gray-600 mt-2">Do you already have an account? please&nbsp;
-                <Link className="text-blue-500 hove:underline" href={"/signUp"}>Sing In</Link>
-            </p>
-
         </Form>
     )
 }

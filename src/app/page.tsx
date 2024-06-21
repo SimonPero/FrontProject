@@ -2,6 +2,7 @@ import Product from "../components/products/Product";
 import Link from "next/link";
 import ProductApi from "@/api/productApi";
 import PreviousPathnameProvider from "@/components/contexts/goBackContext";
+import { withAuth } from "@/middleware/auth";
 const productApi = new ProductApi();
 
 export default async function Home() {
