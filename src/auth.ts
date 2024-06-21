@@ -1,6 +1,5 @@
 import NextAuth from "next-auth"
 import google from "next-auth/providers/google"
-import github from "next-auth/providers/github"
 
 export const {
   handlers: { GET, POST },
@@ -8,6 +7,17 @@ export const {
   signIn,
   signOut,
 } = NextAuth({
+  callbacks: {
+    async signIn({ account, profile} : any) {
+      if (account?.provider === "google") {
+        return profile?.email_verified
+      }
+      return true
+    }
+  },
+  session: {
+    strategy: "jwt"
+  },
   providers: [
     google({
       clientId: process.env.GOOGLE_CLIENT_ID,
@@ -16,7 +26,7 @@ export const {
         params: {
           prompt: "consent",
           access_type: "offline",
-          response_tyoe: "code",
+          response_type: "code",
         },
       },
     }),
