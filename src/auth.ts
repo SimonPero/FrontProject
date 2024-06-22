@@ -1,5 +1,5 @@
 import NextAuth from 'next-auth';
-import google from 'next-auth/providers/google';
+import GoogleProvider from 'next-auth/providers/google';
 import axios from 'axios';
 
 export const {
@@ -25,8 +25,16 @@ export const {
       }
       return true;
     },
-    async session({ session, user }: any) {
-      session.jwt = user.jwt;
+    async jwt({ token, user }: any) {
+      // Si hay un user, esto ocurre durante el login, asigna el JWT al token
+      if (user) {
+        token.jwt = user.jwt;
+      }
+      return token;
+    },
+    async session({ session, token }: any) {
+      // Asigna el JWT del token a la sesión
+      session.jwt = token.jwt;
       return session;
     },
   },
@@ -34,7 +42,7 @@ export const {
     strategy: 'jwt',
   },
   providers: [
-    google({
+    GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
       authorization: {

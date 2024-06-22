@@ -1,16 +1,16 @@
-import { auth } from "./auth"
+import { NextApiResponse } from "next";
+import { auth } from "./auth";
 
-export default auth((req) => {
-  const isLoggedIn = !!req.auth;
+export default async function middlewareAuth(req: any, res: NextApiResponse) {
+  const session = await auth();
   const { nextUrl } = req;
-  console.log(nextUrl)
-  if (nextUrl.pathname == "/signIn") return ;
-  if (!isLoggedIn && nextUrl.pathname === "/productManagement") {
-    return Response.redirect(new URL("/signIn", nextUrl))
+  if (nextUrl.pathname === '/signIn') return;
+  if (!session && nextUrl.pathname === '/productManagement') {
+    return Response.redirect(new URL('/signIn', nextUrl));
   }
-})
-
-// Optionally, don't invoke Middleware on some paths
-export const config = {
-  matcher: ["/((?!api|_next/static|_next/image|favicon.ico).*)"],
 }
+
+// Opcionalmente, no invoques Middleware en algunas rutas
+export const config = {
+  matcher: ['/((?!api|_next/static|_next/image|favicon.ico).*)'],
+};
