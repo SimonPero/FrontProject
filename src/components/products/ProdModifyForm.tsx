@@ -1,6 +1,8 @@
 "use client";
 import React, { useState } from 'react';
 import { FormEvent } from 'react';
+import ProductApi from '@/api/productApi';
+const productApi = new ProductApi();
 
 interface ProductProps {
   category: string;
@@ -46,18 +48,7 @@ const ProdModifyForm: React.FC<ProductProps> = ({ category, name, description, s
     if (formData.image) {
       data.append('image', formData.image);
     }
-    try {
-      const response = await fetch(`http://localhost:8080/api/products/${id}`, {
-        method: 'PUT',
-        body: data,
-        cache: 'no-store'
-      });
-      if (!response.ok) {
-        throw new Error('Failed to submit the form');
-      }
-    } catch (error) {
-      console.error('Error submitting form:', error);
-    }
+    await productApi.updateProd(id)
   }
 
   return (
