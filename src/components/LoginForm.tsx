@@ -7,21 +7,15 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 import Link from "next/link";
+import { logUserSchema } from "@/schemas/users";
+import UserApi from "@/api/usersApi";
 
-const formSchema = z.object({
-    email: z.string()
-        .min(1, "Email is required")
-        .email("Invalid email"),
-    password: z.string()
-        .min(1, "Password is required")
-        .min(8, "Invalid password"),
-})
-
+const userApi = new UserApi();
 
 export function LoginForm() {
     // 1. Define your form.
-    const form = useForm<z.infer<typeof formSchema>>({
-        resolver: zodResolver(formSchema),
+    const form = useForm<z.infer<typeof logUserSchema>>({
+        resolver: zodResolver(logUserSchema),
         defaultValues: {
             email: "",
             password: "",
@@ -29,9 +23,10 @@ export function LoginForm() {
     })
 
     // 2. Define a submit handler.
-    function onSubmit(values: z.infer<typeof formSchema>) {
-        //tomorrow wil do the manual 
+    function onSubmit(values: z.infer<typeof logUserSchema>) {
         console.log(values)
+        console.log(userApi.logUser(values))
+        //i really need to do this later on, now im tired
     }
     return (
         <Form {...form}>

@@ -1,18 +1,18 @@
 import axios from 'axios';
 import { auth } from './auth';
 
-// Crear una instancia de Axios con la configuración base
+//create an Axios instance 
 const apiClient = axios.create({
-  baseURL: 'http://localhost:8080/api',
+  baseURL: 'http://localhost:8080/',
 });
 
-// Interceptor para agregar el JWT a las solicitudes
+//interceptor to add jwt
 apiClient.interceptors.request.use(async (config) => {
-  // Obtener la sesión actual
+  //get the current session
   const session = await auth();
-  // Si la sesión tiene un JWT, agregarlo a las cabeceras de la solicitud
+  //if session has a jwt, added to the headers
   if (session?.jwt) {
-    config.headers.Authorization = `Bearer ${session.jwt}`;
+    config.headers.Authorization = session.jwt;
   }
   return config;
 });

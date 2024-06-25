@@ -42,7 +42,7 @@ export function RegisterForm() {
 
     // 2. Define a submit handler.
     function onSubmit(values: z.infer<typeof formSchema>) {
-        //tomorrow wil do the manual 
+        //tomorrow wil do the manual, i hope 
         console.log(values)
     }
     return (
