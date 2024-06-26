@@ -1,21 +1,15 @@
 "use client"
 
 import { FormEvent } from 'react';
+import ProductApi from '@/api/productApi';
+const productApi = new ProductApi();
 
 export default function ProductForm() {
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
     const formData = new FormData(event.currentTarget);
-    const response = await fetch('http://localhost:8080/api/products', {
-      method: 'POST',
-      body: formData,
-      cache: 'no-store'
-    });
-
-    if (!response.ok) {
-      throw new Error('Failed to submit the form');
-    }
+    await productApi.addProd(formData)
   }
 
   return (

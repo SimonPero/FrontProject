@@ -48,7 +48,7 @@ const ProdModifyForm: React.FC<ProductProps> = ({ category, name, description, s
     if (formData.image) {
       data.append('image', formData.image);
     }
-    await productApi.updateProd(id)
+    await productApi.updateProd(id, data)
   }
 
   return (
