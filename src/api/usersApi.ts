@@ -1,4 +1,4 @@
-import { redirect } from 'next/navigation'
+import { signIn } from "@/auth";
 
 export default class UserApi {
     async registUser() {
@@ -10,16 +10,22 @@ export default class UserApi {
         return res.json();
     }
     async logUser(formData: any) {
-        console.log(formData)
-        const res = await fetch('http://localhost:8080/api/users/login', {
-            method: 'POST',
-            body: formData,
-            cache: 'no-store'
-        });
-
-        if (!res.ok) {
-            console.log(res)
+        try {
+            const res = await fetch('http://localhost:8080/api/users/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                credentials: 'include',
+                body: JSON.stringify(formData)
+            });
+            if (!res.ok) {
+                throw res;
+            }
+            const data = await res.json();
+            return data;
+        } catch (error) {
+            throw new Error('Invalid password or email');
         }
-        redirect("/")
     }
 }
