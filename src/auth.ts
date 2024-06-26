@@ -1,6 +1,9 @@
 import NextAuth from 'next-auth';
 import GoogleProvider from 'next-auth/providers/google';
 import axios from 'axios';
+import CredentialsProvider from "next-auth/providers/credentials"
+import UserApi from './api/usersApi';
+const userApi = new UserApi();
 
 export const {
   handlers: { GET, POST },
@@ -26,14 +29,14 @@ export const {
       return true;
     },
     async jwt({ token, user }: any) {
-      // Si hay un user, esto ocurre durante el login, asigna el JWT al token
       if (user) {
-        token.jwt = user.jwt;
+        token.user = user.user;
+        token.jwt = user.token;
       }
       return token;
     },
     async session({ session, token }: any) {
-      // Asigna el JWT del token a la sesión
+      session.user = token.user;
       session.jwt = token.jwt;
       return session;
     },
@@ -53,5 +56,25 @@ export const {
         },
       },
     }),
+    CredentialsProvider({
+      credentials: {
+        email: { label: "Email", type: "email" },
+        password: { label: "Password", type: "password" },
+      },
+      async authorize(credentials) {
+        if (credentials === null) return null;
+        try {
+          const data = await userApi.logUser(credentials);
+
+          if (data) {
+            return data;
+          } else {
+            throw new Error("Invalid Credentials");
+          }
+        } catch (error: any) {
+          throw new Error(error);
+        }
+      }
+    })
   ],
 });
