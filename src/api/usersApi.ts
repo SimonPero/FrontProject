@@ -1,15 +1,29 @@
-import { signIn } from "@/auth";
+import z from "zod"
+import { registerUserSchema, logUserSchema } from "@/schemas/users";
+
+
 
 export default class UserApi {
-    async registUser() {
-        const res = await fetch('http://localhost:8080/api/users/login', { cache: 'no-store' });
-        if (!res.ok) {
-            // This will activate the closest `error.js` Error Boundary
-            throw new Error('Failed to fetch data');
+    async registerUser(formData: z.infer<typeof registerUserSchema>) {
+        try {
+            const res = await fetch('http://localhost:8080/api/users/register', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(formData)
+            });
+            if (!res.ok) {
+                const errorMessage = await res.json();
+                throw errorMessage.error;
+            }
+            const data = await res.json();
+            return data;
+        } catch (error: any) {
+            throw new Error(error);
         }
-        return res.json();
     }
-    async logUser(formData: any) {
+    async logUser(formData: z.infer<typeof logUserSchema>) {
         try {
             const res = await fetch('http://localhost:8080/api/users/login', {
                 method: 'POST',
