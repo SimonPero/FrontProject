@@ -8,7 +8,6 @@ import { useForm } from "react-hook-form"
 import { z } from "zod"
 import Link from "next/link";
 import { logUserSchema } from "@/schemas/users";
-import UserApi from "@/api/usersApi";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
@@ -43,7 +42,7 @@ export function LoginForm() {
         <>
             <div className="text-x1 text-red-500">{error}</div>
             <Form {...form}>
-                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2">
                     <FormField
                         control={form.control}
                         name="email"

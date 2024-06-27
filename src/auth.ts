@@ -61,7 +61,7 @@ export const {
         email: { label: "Email", type: "email" },
         password: { label: "Password", type: "password" },
       },
-      async authorize(credentials) {
+      async authorize(credentials: any) {
         if (credentials === null) return null;
         try {
           const data = await userApi.logUser(credentials);
