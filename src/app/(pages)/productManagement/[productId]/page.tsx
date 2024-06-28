@@ -1,7 +1,7 @@
 import Product from "../../../../components/products/Product";
 import ProdModifyForm from "../../../../components/products/ProdModifyForm";
 import ProductApi from "@/api/productApi";
-import { BackLink } from "@/components/contexts/goBackContext";
+import { BackLink } from "@/components/useful/goBackContext";
 const productApi = new ProductApi();
 
 export default async function ProductModify({

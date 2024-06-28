@@ -10,9 +10,9 @@ export default async function Home() {
       <div className="space-y-4 m-5">
         {data.length > 0 ? (
           data.map((product: {
-            imageUrl: string; id: string; category: string; name: string; description: string; size: string; price: number; stock: number;
+            imageUrl: string; productID: string; category: string; name: string; description: string; size: string; price: number; stock: number;
           }) => (
-            <Link href={`/${product.id}`}> <Product key={product.id}{...product} /></Link>
+            <Link href={`/${product.productID}`}> <Product id={product.productID} key={product.productID} {...product} /></Link>
           ))
         ) : (
           <p>No products available.</p>

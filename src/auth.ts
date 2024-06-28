@@ -61,11 +61,10 @@ export const {
         email: { label: "Email", type: "email" },
         password: { label: "Password", type: "password" },
       },
-      async authorize(credentials: any) {
+      async authorize(credentials: any, req) {
         if (credentials === null) return null;
         try {
           const data = await userApi.logUser(credentials);
-
           if (data) {
             return data;
           } else {

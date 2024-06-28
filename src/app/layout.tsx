@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import Link from "next/link";
-import PreviousPathnameProvider from "@/components/contexts/goBackContext";
+
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -22,9 +22,9 @@ export default function RootLayout({
           <h1>trirtirt</h1>
           <Link href="/signIn"> Please Log In</Link>
         </header>
-        <PreviousPathnameProvider>
+
         {children}
-        </PreviousPathnameProvider>
+
         <footer className="bg-red-500">
           <h1>trirtirt</h1>
           <div>talalalala</div>

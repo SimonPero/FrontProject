@@ -3,7 +3,7 @@ import Product from '../../../components/products/Product';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import ProductApi from '@/api/productApi';
-import { BackLink } from '@/components/contexts/goBackContext';
+import { BackLink } from '@/components/useful/goBackContext';
 import DeleteButton from '@/components/products/DeleteButton';
 
 const productApi = new ProductApi();
@@ -16,17 +16,17 @@ export default async function Page() {
             <ProductForm />
             {data.length > 0 ? (
                 data.map((product: {
-                    imageUrl: string; id: string; category: string; name: string; description: string; size: string; price: number; stock: number;
+                    imageUrl: string; productID: string; category: string; name: string; description: string; size: string; price: number; stock: number;
                 }) => (
-                    <article key={product.id} >
-                        <Product {...product} />
+                    <article key={product.productID} >
+                        <Product id={product.productID} {...product} />
                         <div className='space-x-2 space-y-2'>
                             <Button asChild>
-                                <Link href={`/productManagement/${product.id}`}>
+                                <Link href={`/productManagement/${product.productID}`}>
                                     MODIFICAR
                                 </Link>
                             </Button>
-                            <DeleteButton productId={product.id} />
+                            <DeleteButton productID={product.productID} />
                         </div>
                     </article>
                 ))

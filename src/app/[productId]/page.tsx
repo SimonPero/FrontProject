@@ -1,6 +1,6 @@
 import Product from "@/components/products/Product";
 import ProductApi from "@/api/productApi";
-import { BackLink } from "@/components/contexts/goBackContext";
+import { BackLink } from "@/components/useful/goBackContext";
 const productApi = new ProductApi();
 
 export default async function ProductModify({

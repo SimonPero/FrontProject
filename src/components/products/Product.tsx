@@ -20,6 +20,7 @@ interface ProductProps {
 }
 
 const productApi = new ProductApi();
+
 const Product: React.FC<ProductProps> = async ({ name, description, size, price, stock, imageUrl, id }) => {
   const img = await productApi.getImage(imageUrl);
   return (
