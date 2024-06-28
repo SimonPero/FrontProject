@@ -1,8 +1,6 @@
 import z from "zod"
 import { registerUserSchema, logUserSchema } from "@/schemas/users";
 
-
-
 export default class UserApi {
     async registerUser(formData: z.infer<typeof registerUserSchema>) {
         try {
@@ -25,16 +23,16 @@ export default class UserApi {
     }
     async logUser(formData: z.infer<typeof logUserSchema>) {
         try {
+            const headers = new Headers();
+            headers.append('Content-Type', 'application/json');
             const res = await fetch('http://localhost:8080/api/users/login', {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                credentials: 'include',
-                body: JSON.stringify(formData)
+                headers: headers,
+                body: JSON.stringify(formData),
             });
             if (!res.ok) {
-                throw res;
+                const error = await res.json()
+                throw new Error(error.error);
             }
             const data = await res.json();
             return data;

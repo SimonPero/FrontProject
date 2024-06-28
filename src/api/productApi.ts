@@ -1,66 +1,92 @@
+import { auth } from "@/auth";
 export default class ProductApi {
+    async getHeaders() {
+        const session: any = await auth();
+        return {
+            'Authorization': `Bearer ${session?.jwt}`,
+            'Content-Type': 'application/json'
+        };
+    }
+
     async getData() {
-        const res = await fetch('http://localhost:8080/api/products', { cache: 'no-store' });
+        const headers = await this.getHeaders();
+        const res = await fetch('http://localhost:8080/api/products', {
+            cache: 'no-store',
+            headers
+        });
         if (!res.ok) {
-            // This will activate the closest error.js Error Boundary
-            throw new Error('Failed to fetch data');
+            const error = await res.json()
+            throw new Error(error.error);
         }
         return res.json();
     }
-    async getDataById(id: string) {
-        const res = await fetch(`http://localhost:8080/api/products/${id}`, { cache: 'no-store' });
-        if (!res.ok) {
-            // This will activate the closest error.js Error Boundary
-            throw new Error('Failed to fetch data');
-        }
 
+    async getDataById(id: string) {
+        const headers = await this.getHeaders();
+        const res = await fetch(`http://localhost:8080/api/products/${id}`, {
+            cache: 'no-store',
+            headers
+        });
+        if (!res.ok) {
+            const error = await res.json()
+            throw new Error(error.error);
+        }
         return res.json();
     }
 
     async getImage(imageUrl: string) {
+        const headers = await this.getHeaders();
         try {
             if (imageUrl === null) {
-                return ""
+                return "";
             }
-            const res = await fetch(`http://localhost:8080${imageUrl}`, { cache: 'no-store' });
+            const res = await fetch(`http://localhost:8080${imageUrl}`, {
+                cache: 'no-store',
+                headers
+            });
             if (!res.ok) {
-                throw new Error('Failed to fetch data');
+                const error = await res.json()
+                throw new Error(error.error);
             }
             return res.url;
         } catch (error) {
-            // Maneja cualquier error aquí
             console.error('Error fetching image:', error);
             throw error;
         }
     }
 
     async deleteProd(id: string) {
+        const headers = await this.getHeaders();
         try {
             const res = await fetch(`http://localhost:8080/api/products/${id}`, {
                 method: 'DELETE',
-                cache: 'no-store'
+                cache: 'no-store',
+                headers
             });
             if (!res.ok) {
-                throw new Error('Failed to delete prod');
+                const error = await res.json()
+                throw new Error(error.error);
             }
             return res.url;
         } catch (error) {
-            // Maneja cualquier error aquí
             console.error('Error deleting prod:', error);
             throw error;
         }
     }
 
     async updateProd(id: string, updateData: any) {
+        const headers = await this.getHeaders();
         try {
-            const response = await fetch(`http://localhost:8080/api/products/${id}`, {
+            const res = await fetch(`http://localhost:8080/api/products/${id}`, {
                 method: 'POST',
-                body: updateData,
-                cache: 'no-store'
+                body: JSON.stringify(updateData),
+                cache: 'no-store',
+                headers
             });
 
-            if (!response.ok) {
-                throw new Error('Failed to submit the form');
+            if (!res.ok) {
+                const error = await res.json()
+                throw new Error(error.error);
             }
         } catch (error) {
             console.error('Error submitting form:', error);
@@ -69,14 +95,17 @@ export default class ProductApi {
     }
 
     async addProd(data: any) {
-        const response = await fetch('http://localhost:8080/api/products', {
+        const headers = await this.getHeaders();
+        const res = await fetch('http://localhost:8080/api/products', {
             method: 'POST',
-            body: data,
-            cache: 'no-store'
+            body: JSON.stringify(data),
+            cache: 'no-store',
+            headers
         });
 
-        if (!response.ok) {
-            throw new Error('Failed to submit the form');
+        if (!res.ok) {
+            const error = await res.json()
+            throw new Error(error.error);
         }
     }
 }
