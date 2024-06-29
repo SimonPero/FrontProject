@@ -1,8 +1,9 @@
 import NextAuth from 'next-auth';
 import GoogleProvider from 'next-auth/providers/google';
 import axios from 'axios';
-import CredentialsProvider from "next-auth/providers/credentials"
+import CredentialsProvider from 'next-auth/providers/credentials';
 import UserApi from './api/usersApi';
+
 const userApi = new UserApi();
 
 export const {
@@ -21,7 +22,7 @@ export const {
         });
 
         if (response.data.token) {
-          user.jwt = response.data.token;
+          user.token = response.data.token;
           return true;
         }
         return false;
@@ -29,15 +30,19 @@ export const {
       return true;
     },
     async jwt({ token, user }: any) {
+      console.log("JWT Callback - User:", user);
       if (user) {
-        token.user = user.user;
+        token.user = user;
         token.jwt = user.token;
       }
+      console.log("JWT Callback - Token:", token);
       return token;
     },
     async session({ session, token }: any) {
+      console.log("Session Callback - Token:", token);
       session.user = token.user;
       session.jwt = token.jwt;
+      console.log("Session Callback - Session:", session);
       return session;
     },
   },
@@ -58,22 +63,26 @@ export const {
     }),
     CredentialsProvider({
       credentials: {
-        email: { label: "Email", type: "email" },
-        password: { label: "Password", type: "password" },
+        email: { label: 'Email', type: 'email' },
+        password: { label: 'Password', type: 'password' },
       },
-      async authorize(credentials: any, req) {
+      async authorize(credentials: any,) {
         if (credentials === null) return null;
         try {
           const data = await userApi.logUser(credentials);
+          console.log("Authorize - Data:", data);
           if (data) {
-            return data;
+            return {
+              ...data.user,
+              token: data.token,
+            };
           } else {
-            throw new Error("Invalid Credentials");
+            throw new Error('Invalid Credentials');
           }
         } catch (error: any) {
-          throw new Error(error);
+          throw new Error(error.message);
         }
-      }
-    })
+      },
+    }),
   ],
 });

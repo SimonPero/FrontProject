@@ -10,8 +10,7 @@ import Link from "next/link";
 import { logUserSchema } from "@/schemas/users";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import UserApi from "@/api/usersApi";
-const userApi = new UserApi();
+
 export function LoginForm() {
 
     const [error, setError] = useState("")
@@ -29,7 +28,7 @@ export function LoginForm() {
     // 2. Define a submit handler.
     async function onSubmit(values: z.infer<typeof logUserSchema>) {
         try {
-            const res = await userApi.logUser(values);
+            const res = await doCredentialLogin(values)
             if (res.error) {
                 setError(res.error.message);
             } else {
