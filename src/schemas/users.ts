@@ -27,5 +27,4 @@ export const registerUserSchema = z.object({
         .lte(90, "You must be younger than 90 years old"),
     location: z.string()
         .min(1, "Location is required"),
-
 })

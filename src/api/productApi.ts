@@ -1,7 +1,5 @@
-import { auth } from "@/auth";
 export default class ProductApi {
-    async getHeaders() {
-        const session: any = await auth();
+    async getHeaders(session: any) {
         return {
             'Authorization': `Bearer ${session?.jwt}`,
             'Content-Type': 'application/json'
@@ -9,10 +7,8 @@ export default class ProductApi {
     }
 
     async getData() {
-        const headers = await this.getHeaders();
         const res = await fetch('http://localhost:8080/api/products', {
             cache: 'no-store',
-            headers
         });
         if (!res.ok) {
             const error = await res.json()
@@ -21,8 +17,8 @@ export default class ProductApi {
         return res.json();
     }
 
-    async getDataById(id: string) {
-        const headers = await this.getHeaders();
+    async getDataById(id: string, session: any) {
+        const headers = await this.getHeaders(session);
         const res = await fetch(`http://localhost:8080/api/products/${id}`, {
             cache: 'no-store',
             headers
@@ -35,14 +31,12 @@ export default class ProductApi {
     }
 
     async getImage(imageUrl: string) {
-        const headers = await this.getHeaders();
         try {
             if (imageUrl === null) {
                 return "";
             }
             const res = await fetch(`http://localhost:8080${imageUrl}`, {
                 cache: 'no-store',
-                headers
             });
             if (!res.ok) {
                 const error = await res.json()
@@ -55,8 +49,8 @@ export default class ProductApi {
         }
     }
 
-    async deleteProd(id: string) {
-        const headers = await this.getHeaders();
+    async deleteProd(id: string, session: any) {
+        const headers = await this.getHeaders(session);
         try {
             const res = await fetch(`http://localhost:8080/api/products/${id}`, {
                 method: 'DELETE',
@@ -74,14 +68,16 @@ export default class ProductApi {
         }
     }
 
-    async updateProd(id: string, updateData: any) {
-        const headers = await this.getHeaders();
+    async updateProd(id: string, updateData: any, session: any) {
         try {
             const res = await fetch(`http://localhost:8080/api/products/${id}`, {
-                method: 'POST',
-                body: JSON.stringify(updateData),
+                method: 'PUT',
+                body: updateData,
                 cache: 'no-store',
-                headers
+                headers: {
+                    'Authorization': `Bearer ${session?.jwt}`
+                    , 'Accept': 'application/json'
+                },
             });
 
             if (!res.ok) {
@@ -94,13 +90,16 @@ export default class ProductApi {
         }
     }
 
-    async addProd(data: any) {
-        const headers = await this.getHeaders();
+    async addProd(data: any, session: any) {
+
         const res = await fetch('http://localhost:8080/api/products', {
             method: 'POST',
-            body: JSON.stringify(data),
+            body: data,
             cache: 'no-store',
-            headers
+            headers: {
+                'Authorization': `Bearer ${session?.jwt}`
+                , 'Accept': 'application/json'
+            },
         });
 
         if (!res.ok) {

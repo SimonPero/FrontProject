@@ -6,8 +6,7 @@ const productApi = new ProductApi();
 export default async function Home() {
   const data = await productApi.getData();
   return (
-    <main>
-      <div className="space-y-4 m-5">
+    <main className="space-y-8 m-5">
         {data.length > 0 ? (
           data.map((product: {
             imageUrl: string; productID: string; category: string; name: string; description: string; size: string; price: number; stock: number;
@@ -17,7 +16,6 @@ export default async function Home() {
         ) : (
           <p>No products available.</p>
         )}
-      </div>
       <div>
         <Link href="/productManagement">Product Management</Link>
       </div>

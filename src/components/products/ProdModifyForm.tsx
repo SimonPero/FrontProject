@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { FormEvent } from 'react';
 import ProductApi from '@/api/productApi';
+import { useSession } from 'next-auth/react';
 const productApi = new ProductApi();
 
 interface ProductProps {
@@ -12,10 +13,10 @@ interface ProductProps {
   price: number;
   stock: number;
   imageUrl: string;
-  id: string;
+  productID: string;
 }
 
-const ProdModifyForm: React.FC<ProductProps> = ({ category, name, description, size, price, stock, imageUrl, id }) => {
+const ProdModifyForm: React.FC<ProductProps> = ({ category, name, description, size, price, stock, imageUrl, productID }) => {
   const [formData, setFormData] = useState({
     category,
     name,
@@ -26,6 +27,11 @@ const ProdModifyForm: React.FC<ProductProps> = ({ category, name, description, s
     image: null as File | null
   });
 
+  const { data: session, status } = useSession();
+
+  if (status === 'loading') {
+    return <div>Loading...</div>;
+  }
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, files } = e.target;
     if (name === 'image' && files) {
@@ -48,7 +54,7 @@ const ProdModifyForm: React.FC<ProductProps> = ({ category, name, description, s
     if (formData.image) {
       data.append('image', formData.image);
     }
-    await productApi.updateProd(id, data)
+    await productApi.updateProd(productID, data, session)
   }
 
   return (

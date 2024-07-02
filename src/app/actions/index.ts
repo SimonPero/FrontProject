@@ -1,6 +1,7 @@
 "use server"
 
 import { signIn } from "@/auth"
+import { stringifyError } from "next/dist/shared/lib/utils";
 
 export async function doSocialLogin(formData: any) {
     const action = formData.get("action")
@@ -25,6 +26,6 @@ export async function doCredentialLogin(formData: any) {
         }
         return res;
     } catch (error: any) {
-        throw new Error(error.message);
+        throw new Error(error.cause.err.message);
     }
 }

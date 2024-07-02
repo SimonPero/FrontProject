@@ -30,19 +30,15 @@ export const {
       return true;
     },
     async jwt({ token, user }: any) {
-      console.log("JWT Callback - User:", user);
       if (user) {
         token.user = user;
         token.jwt = user.token;
       }
-      console.log("JWT Callback - Token:", token);
       return token;
     },
     async session({ session, token }: any) {
-      console.log("Session Callback - Token:", token);
       session.user = token.user;
       session.jwt = token.jwt;
-      console.log("Session Callback - Session:", session);
       return session;
     },
   },
@@ -70,7 +66,6 @@ export const {
         if (credentials === null) return null;
         try {
           const data = await userApi.logUser(credentials);
-          console.log("Authorize - Data:", data);
           if (data) {
             return {
               ...data.user,

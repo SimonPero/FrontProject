@@ -9,7 +9,7 @@ export function BackLink() {
     }
     return (
         <Button onClick={handleBack}>
-            pololo
+            Go back
         </Button>
     );
 }

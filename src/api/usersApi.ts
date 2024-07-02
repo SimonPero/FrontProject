@@ -35,7 +35,6 @@ export default class UserApi {
                 throw new Error(error.error);
             }
             const data = await res.json();
-            console.log("data",data)
             return data;
         } catch (error) {
             throw new Error('Invalid password or email');
