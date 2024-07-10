@@ -3,7 +3,6 @@ import GoogleProvider from 'next-auth/providers/google';
 import axios from 'axios';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import UserApi from './api/usersApi';
-
 const userApi = new UserApi();
 
 export const {

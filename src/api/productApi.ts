@@ -1,3 +1,6 @@
+
+import envConfig from "@/config/env.config"; 
+
 export default class ProductApi {
     async getHeaders(session: any) {
         return {
@@ -7,7 +10,7 @@ export default class ProductApi {
     }
 
     async getData() {
-        const res = await fetch('http://localhost:8080/api/products', {
+        const res = await fetch(`${envConfig.apiUrl}/api/products`, {
             cache: 'no-store',
         });
         if (!res.ok) {
@@ -19,7 +22,7 @@ export default class ProductApi {
 
     async getDataById(id: string, session: any) {
         const headers = await this.getHeaders(session);
-        const res = await fetch(`http://localhost:8080/api/products/${id}`, {
+        const res = await fetch(`${envConfig.apiUrl}/api/products/${id}`, {
             cache: 'no-store',
             headers
         });
@@ -35,7 +38,7 @@ export default class ProductApi {
             if (imageUrl === null) {
                 return "";
             }
-            const res = await fetch(`http://localhost:8080${imageUrl}`, {
+            const res = await fetch(`${envConfig.apiUrl}${imageUrl}`, {
                 cache: 'no-store',
             });
             if (!res.ok) {
@@ -52,7 +55,7 @@ export default class ProductApi {
     async deleteProd(id: string, session: any) {
         const headers = await this.getHeaders(session);
         try {
-            const res = await fetch(`http://localhost:8080/api/products/${id}`, {
+            const res = await fetch(`${envConfig.apiUrl}/api/products/${id}`, {
                 method: 'DELETE',
                 cache: 'no-store',
                 headers
@@ -70,7 +73,7 @@ export default class ProductApi {
 
     async updateProd(id: string, updateData: any, session: any) {
         try {
-            const res = await fetch(`http://localhost:8080/api/products/${id}`, {
+            const res = await fetch(`${envConfig.apiUrl}/api/products/${id}`, {
                 method: 'PUT',
                 body: updateData,
                 cache: 'no-store',
@@ -92,7 +95,7 @@ export default class ProductApi {
 
     async addProd(data: any, session: any) {
 
-        const res = await fetch('http://localhost:8080/api/products', {
+        const res = await fetch(`${envConfig.apiUrl}/api/products`, {
             method: 'POST',
             body: data,
             cache: 'no-store',

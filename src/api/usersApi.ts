@@ -1,10 +1,11 @@
 import z from "zod"
 import { registerUserSchema, logUserSchema } from "@/schemas/users";
+import envConfig from "@/config/env.config";
 
 export default class UserApi {
     async registerUser(formData: z.infer<typeof registerUserSchema>) {
         try {
-            const res = await fetch('http://localhost:8080/api/users/register', {
+            const res = await fetch(`${envConfig.apiUrl}/api/users/register`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -25,7 +26,7 @@ export default class UserApi {
         try {
             const headers = new Headers();
             headers.append('Content-Type', 'application/json');
-            const res = await fetch('http://localhost:8080/api/users/login', {
+            const res = await fetch(`${envConfig.apiUrl}/api/users/login`, {
                 method: 'POST',
                 headers: headers,
                 body: JSON.stringify(formData),
