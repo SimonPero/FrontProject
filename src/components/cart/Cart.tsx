@@ -1,10 +1,24 @@
-"use server"
+"use client"
+
+import { DeleteFromCartButton } from "./DeleteFromCartButton";
+import {
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableHeader,
+    TableRow,
+} from "@/components/ui/table"
+import UpdateQuantity from "./UpdateQuantity";
+import { useState } from "react";
 
 interface IProduct {
     productID: number;
     name: string;
     price: number;
     description: string;
+    category: string;
+    stock: number;
 }
 
 interface ICart {
@@ -26,28 +40,47 @@ interface ICartItem {
 interface IAddToCartProps {
     cart: ICart;
     items: ICartItem[];
+    session: any;
 }
 
-const Cart: React.FC<IAddToCartProps> = ({ items, cart }) => {
+const Cart: React.FC<IAddToCartProps> = ({ items, cart, session}) => {
+    const [quantity, setQuantity] = useState(1)
     return (
         <div>
-            <div>
-                {cart.cartID}
-            </div>
-            {items.length > 0 ? (
-                items.map((cartItem: ICartItem) => (
-                    <>
-                        <div className="flex gap-2">
-                            <p>name: {cartItem.product.name}</p>
-                            <p>price: {cartItem.product.price}</p>
-                            <p>quantity: {cartItem.quantity}</p>
-                            <p>description: {cartItem.product.description}</p>
-                        </div>
-                    </>
-                ))
-            ) : (
-                <p>No products available.</p>
-            )}
+            <Table key={cart.cartID}>
+                <TableHeader>
+                    <TableRow>
+                        <TableHead className="w-[100px]">Product</TableHead>
+                        <TableHead>Price</TableHead>
+                        <TableHead>Ordered</TableHead>
+                        <TableHead>Category</TableHead>
+                        <TableHead></TableHead>
+                        <TableHead className="text-right">TotalCost</TableHead>
+                    </TableRow>
+                </TableHeader>
+                {items.length > 0 ? (
+                    items.map((cartItem: ICartItem) => (
+                        <TableBody key={cartItem.product.productID}>
+                            <TableRow>
+                                <TableCell className="font-medium">{cartItem.product.name}</TableCell>
+                                <TableCell>${cartItem.product.price}</TableCell>
+                                <TableCell>
+                                    <UpdateQuantity
+                                        initialCount={cartItem.quantity}
+                                        stock={cartItem.product.stock}
+                                        onCountChange={(newCount: number) => setQuantity(newCount)}
+                                    />
+                                </TableCell>
+                                <TableCell>{cartItem.product.category}</TableCell>
+                                <TableCell><DeleteFromCartButton prodID={cartItem.product.productID} cartID={cart.cartID} session={session} /></TableCell>
+                                <TableCell className="text-right">${cartItem.product.price * cartItem.quantity}</TableCell>
+                            </TableRow>
+                        </TableBody>
+                    ))
+                ) : (
+                    <p>No products available.</p>
+                )}
+            </Table>
         </div>
     );
 }
