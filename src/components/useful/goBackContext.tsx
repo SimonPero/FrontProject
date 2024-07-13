@@ -1,6 +1,7 @@
 "use client";
 import { useRouter } from "next/navigation";
 import { Button } from "../ui/button";
+import { ArrowLeftIcon } from "@heroicons/react/24/outline";
 
 export function BackLink() {
     const router = useRouter();
@@ -9,7 +10,7 @@ export function BackLink() {
     }
     return (
         <Button onClick={handleBack}>
-            Go back
+            <ArrowLeftIcon className="size-6" />
         </Button>
     );
 }

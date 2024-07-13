@@ -24,7 +24,7 @@ const productApi = new ProductApi();
 const Product: React.FC<ProductProps> = async ({ name, description, size, price, stock, imageUrl, id }) => {
   const img = await productApi.getImage(imageUrl);
   return (
-    <Card id={id} className="bg-gray-500">
+    <Card id={id} className="bg-gray-500 mb-8 mt-8">
       <CardHeader>
         <CardTitle>{name}</CardTitle>
       </CardHeader>
