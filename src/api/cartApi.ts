@@ -25,7 +25,6 @@ export default class CartApi {
     }
     async getCart(email: string | null | undefined, session: any) {
         const headers = await this.getHeaders(session);
-        console.log(email)
         const res = await fetch(`${envConfig.apiUrl}/api/cart/getCart`, {
             cache: 'no-store',
             method: "POST",
@@ -38,5 +37,19 @@ export default class CartApi {
         }
         return res.json();
 
+    }
+
+    async deleteProdFromCart(prodID:number, cartID:number, session: any) {
+        const headers = await this.getHeaders(session);
+        const res = await fetch(`${envConfig.apiUrl}/api/cart/deleteFromCart/${prodID}/${cartID}`, {
+            cache: 'no-store',
+            method: "DELETE",
+            headers,
+        });
+        if (!res.ok) {
+            const error = await res.json()
+            throw new Error(error.error);
+        }
+        return res.json();
     }
 }
