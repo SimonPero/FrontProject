@@ -8,6 +8,6 @@ export default async function Page() {
     let userCart = await cartApi.getCart(session?.user?.email, session)
 
     return (
-        <Cart cart={userCart.cart} items={userCart.items} />
+        <Cart cart={userCart.cart} items={userCart.items} session={session} />
     )
 }
