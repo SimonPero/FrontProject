@@ -95,19 +95,26 @@ export default class ProductApi {
 
     async addProd(data: any, session: any) {
 
+        const formData = new FormData();
+        Object.entries(data).forEach(([key, value]) => {
+            if (value instanceof File) {
+                formData.append(key, value);
+            } else {
+                formData.append(key, String(value));
+            }
+        });
         const res = await fetch(`${envConfig.apiUrl}/api/products`, {
             method: 'POST',
-            body: data,
-            cache: 'no-store',
+            body: formData,
             headers: {
                 'Authorization': `Bearer ${session?.jwt}`
-                , 'Accept': 'application/json'
             },
         });
-
+    
         if (!res.ok) {
             const error = await res.json()
             throw new Error(error.error);
         }
+        return res.json();
     }
 }
