@@ -1,35 +1,172 @@
-"use client"
-
-import { FormEvent } from 'react';
-import ProductApi from '@/api/productApi';
-import { useSession } from 'next-auth/react';
+"use client";
+import { useState } from "react";
+import z from "zod";
+import ProductApi from "@/api/productApi";
+import { useSession } from "next-auth/react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "../ui/form";
+import { Input } from "../ui/input";
+import { Button } from "../ui/button";
+import { productSchema } from "@/schemas/productSchema";
 const productApi = new ProductApi();
 
 export default function ProductForm() {
   const { data: session, status } = useSession();
+  const [error, setError] = useState("");
 
-  if (status === 'loading') {
+  const form = useForm<z.infer<typeof productSchema>>({
+    resolver: zodResolver(productSchema),
+    defaultValues: {
+      name: "",
+      description: "",
+      size: "",
+      stock: 0,
+      price: 0,
+      category: "",
+    },
+  });
+
+  async function onSubmit(values: z.infer<typeof productSchema>) {
+    try {
+      const res = await productApi.addProd(values, session);
+      if (res.error) {
+        setError(res.error.message);
+      } 
+    } catch (error: any) {
+      setError(error.message);
+    }
+  }
+
+  if (status === "loading") {
     return <div>Loading...</div>;
   }
 
-  async function onSubmit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-
-    const formData = new FormData(event.currentTarget);
-    await productApi.addProd(formData, session)
-  }
-
   return (
-    <form className='max-w-2x1 bg-gray-200 p-6 space-x-4 flex flex-col' onSubmit={onSubmit}>
-      <div>Form</div>
-      <input type="text" name="name" placeholder="Name" />
-      <input type="text" name="category" placeholder="Category" />
-      <input type="number" name="price" placeholder="Price" />
-      <input type="text" name="size" placeholder="Size" />
-      <input type="number" name="stock" placeholder="Stock" />
-      <input type="text" name="description" placeholder="Description" />
-      <input type="file" name="image" />
-      <button className='bg-red-500' type="submit">Submit</button>
-    </form>
+    <>
+      {error && <div className="text-xl text-red-500">{error}</div>}
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2">
+          <FormField
+            control={form.control}
+            name="name"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Name</FormLabel>
+                <FormControl>
+                  <Input placeholder="Product name" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="category"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Category</FormLabel>
+                <FormControl>
+                  <Input placeholder="Category" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="size"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Size</FormLabel>
+                <FormControl>
+                  <Input placeholder="Size" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="price"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Price</FormLabel>
+                <FormControl>
+                  <Input
+                    type="number"
+                    step="0.01"
+                    placeholder="Price"
+                    {...field}
+                    onChange={(e) => field.onChange(parseFloat(e.target.value))}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="stock"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Stock</FormLabel>
+                <FormControl>
+                  <Input
+                    type="number"
+                    placeholder="Stock"
+                    {...field}
+                    onChange={(e) => field.onChange(parseInt(e.target.value))}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="description"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Description</FormLabel>
+                <FormControl>
+                  <Input placeholder="Description" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="image" // Change this from 'img' to 'image'
+            render={({ field: { onChange, value, ...rest } }) => (
+              <FormItem>
+                <FormLabel>Image</FormLabel>
+                <FormControl>
+                  <Input
+                    type="file"
+                    accept="image/*"
+                    onChange={(e) => {
+                      const file = e.target.files?.[0];
+                      onChange(file);
+                    }}
+                    {...rest}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <Button type="submit">Submit</Button>
+        </form>
+      </Form>
+    </>
   );
 }
