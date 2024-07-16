@@ -1,7 +1,6 @@
 "use server"
 
 import { signIn } from "@/auth"
-import { stringifyError } from "next/dist/shared/lib/utils";
 
 export async function doSocialLogin(formData: any) {
     const action = formData.get("action")
