@@ -11,7 +11,6 @@ import {
 } from "@/components/ui/table";
 import UpdateQuantity from "./UpdateQuantity";
 import { useEffect, useState } from "react";
-import { Suspense } from "react";
 
 interface IProduct {
   productID: number;
@@ -48,7 +47,6 @@ const Cart: React.FC<IAddToCartProps> = ({ items, cart, session }) => {
   const [quantities, setQuantities] = useState<{ [key: number]: number }>({});
 
   useEffect(() => {
-    // Inicializa las cantidades con los valores del carrito
     const initialQuantities = items.reduce((acc, item) => {
       acc[item.product.productID] = item.quantity;
       return acc;
@@ -60,60 +58,58 @@ const Cart: React.FC<IAddToCartProps> = ({ items, cart, session }) => {
     setQuantities((prev) => ({ ...prev, [productID]: newQuantity }));
   };
   return (
-    <Suspense fallback={<p>loading</p>}>
-      <div>
-        <Table key={cart.cartID}>
-          <TableHeader>
-            <TableRow>
-              <TableHead className="w-[100px]">Product</TableHead>
-              <TableHead>Price</TableHead>
-              <TableHead>Ordered</TableHead>
-              <TableHead>Category</TableHead>
-              <TableHead></TableHead>
-              <TableHead className="text-right">TotalCost</TableHead>
-            </TableRow>
-          </TableHeader>
+    <div>
+      <Table key={cart.cartID}>
+        <TableHeader>
+          <TableRow>
+            <TableHead className="w-[100px]">Product</TableHead>
+            <TableHead>Price</TableHead>
+            <TableHead>Ordered</TableHead>
+            <TableHead>Category</TableHead>
+            <TableHead></TableHead>
+            <TableHead className="text-right">TotalCost</TableHead>
+          </TableRow>
+        </TableHeader>
 
-          {items.length > 0 ? (
-            items.map((cartItem: ICartItem) => (
-              <TableBody key={cartItem.product.productID}>
-                <TableRow>
-                  <TableCell className="font-medium">
-                    {cartItem.product.name}
-                  </TableCell>
-                  <TableCell>${cartItem.product.price}</TableCell>
-                  <TableCell>
-                    <UpdateQuantity
-                      initialCount={cartItem.quantity}
-                      stock={cartItem.product.stock}
-                      onCountChange={(newCount: number) =>
-                        updateQuantity(cartItem.product.productID, newCount)
-                      }
-                    />
-                  </TableCell>
-                  <TableCell>{cartItem.product.category}</TableCell>
-                  <TableCell>
-                    <DeleteFromCartButton
-                      prodID={cartItem.product.productID}
-                      cartID={cart.cartID}
-                      session={session}
-                    />
-                  </TableCell>
-                  <TableCell className="text-right">
-                    $
-                    {cartItem.product.price *
-                      (quantities[cartItem.product.productID] ||
-                        cartItem.quantity)}
-                  </TableCell>
-                </TableRow>
-              </TableBody>
-            ))
-          ) : (
-            <p>No products Available</p>
-          )}
-        </Table>
-      </div>
-    </Suspense>
+        {items.length > 0 ? (
+          items.map((cartItem: ICartItem) => (
+            <TableBody key={cartItem.product.productID}>
+              <TableRow>
+                <TableCell className="font-medium">
+                  {cartItem.product.name}
+                </TableCell>
+                <TableCell>${cartItem.product.price}</TableCell>
+                <TableCell>
+                  <UpdateQuantity
+                    initialCount={cartItem.quantity}
+                    stock={cartItem.product.stock}
+                    onCountChange={(newCount: number) =>
+                      updateQuantity(cartItem.product.productID, newCount)
+                    }
+                  />
+                </TableCell>
+                <TableCell>{cartItem.product.category}</TableCell>
+                <TableCell>
+                  <DeleteFromCartButton
+                    prodID={cartItem.product.productID}
+                    cartID={cart.cartID}
+                    session={session}
+                  />
+                </TableCell>
+                <TableCell className="text-right">
+                  $
+                  {cartItem.product.price *
+                    (quantities[cartItem.product.productID] ||
+                      cartItem.quantity)}
+                </TableCell>
+              </TableRow>
+            </TableBody>
+          ))
+        ) : (
+          <TableBody>There are no products in your cart</TableBody>
+        )}
+      </Table>
+    </div>
   );
 };
 

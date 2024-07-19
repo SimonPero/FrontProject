@@ -12,8 +12,8 @@ export default async function Home() {
           imageUrl: string; productID: string; category: string; name: string; description: string; size: string; price: number; stock: number;
         }) => (
 
-            <Link href={`/${product.productID}`}>
-              <Product id={product.productID} key={product.productID} {...product} />
+            <Link key={product.productID} href={`/${product.productID}`}>
+              <Product id={product.productID}  {...product} />
             </Link>
 
         ))
