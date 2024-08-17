@@ -7,10 +7,14 @@ export async function doSocialLogin(formData: any) {
     await signIn(action, { redirectTo: "/" })
 }
 
-//elimie doSocialRegister
-
 export async function doLogout() {
-    await signOut()
+
+    try {
+        await signOut()
+        
+    } catch (error) {
+        console.log(error)
+    }
 }
 
 export async function doCredentialLogin(formData: any) {

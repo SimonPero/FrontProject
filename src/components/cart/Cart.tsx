@@ -58,16 +58,26 @@ const Cart: React.FC<IAddToCartProps> = ({ items, cart, session }) => {
     setQuantities((prev) => ({ ...prev, [productID]: newQuantity }));
   };
   return (
-    <div>
+    <>
       <Table key={cart.cartID}>
         <TableHeader>
           <TableRow>
-            <TableHead className="w-[100px]">Product</TableHead>
-            <TableHead>Price</TableHead>
-            <TableHead>Ordered</TableHead>
-            <TableHead>Category</TableHead>
-            <TableHead></TableHead>
-            <TableHead className="text-right">TotalCost</TableHead>
+            <TableHead className="w-[100px]">
+              <p>Product</p>
+            </TableHead>
+            <TableHead className="w-[100px]">
+              <p>Price</p>
+            </TableHead>
+            <TableHead className="w-[100px]">
+              <p>Ordered</p>
+            </TableHead>
+            <TableHead className="w-[100px] ">
+              <p>Category</p>
+            </TableHead>
+            <TableHead className="text-right"></TableHead>
+            <TableHead className="text-right">
+              <p>TotalCost</p>
+            </TableHead>
           </TableRow>
         </TableHeader>
 
@@ -106,10 +116,14 @@ const Cart: React.FC<IAddToCartProps> = ({ items, cart, session }) => {
             </TableBody>
           ))
         ) : (
-          <TableBody>There are no products in your cart</TableBody>
+          <TableBody>
+            <TableRow>
+              <TableCell colSpan={6}>No items in cart</TableCell>
+            </TableRow>
+          </TableBody>
         )}
       </Table>
-    </div>
+    </>
   );
 };
 

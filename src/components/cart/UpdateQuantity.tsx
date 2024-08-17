@@ -36,12 +36,12 @@ export default function UpdateQuantity({
 
   return (
     <div className="flex items-center">
-      <Button onClick={handleDecrement} disabled={count <= 1}>
-        <ArrowLeftIcon className="h-5 m-5" />
+      <Button onClick={handleDecrement} disabled={count <= 1} className="w-[50px]">
+        <ArrowLeftIcon className="h-5 w-[20px]" />
       </Button>
       <div className="mx-2">{count}</div>
-      <Button onClick={handleIncrement} disabled={count >= stock}>
-        <ArrowRightIcon className="h-5 m-5" />
+      <Button onClick={handleIncrement} disabled={count >= stock} className="w-[50px]">
+        <ArrowRightIcon className="h-5 w-[20px]"  />
       </Button>
     </div>
   );
