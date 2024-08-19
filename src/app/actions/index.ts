@@ -8,10 +8,8 @@ export async function doSocialLogin(formData: any) {
 }
 
 export async function doLogout() {
-
     try {
         await signOut()
-        
     } catch (error) {
         console.log(error)
     }
