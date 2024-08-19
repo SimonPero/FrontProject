@@ -3,20 +3,11 @@ import React, { useState } from 'react';
 import { FormEvent } from 'react';
 import ProductApi from '@/api/productApi';
 import { useSession } from 'next-auth/react';
+import { IProduct } from '@/types/Iprod';
+
 const productApi = new ProductApi();
 
-interface ProductProps {
-  category: string;
-  name: string;
-  description: string;
-  size: string;
-  price: number;
-  stock: number;
-  imageUrl: string;
-  productID: string;
-}
-
-const ProdModifyForm: React.FC<ProductProps> = ({ category, name, description, size, price, stock, imageUrl, productID }) => {
+const ProdModifyForm: React.FC<IProduct> = ({ category, name, description, size, price, stock, imageUrl, productID }) => {
   const [formData, setFormData] = useState({
     category,
     name,

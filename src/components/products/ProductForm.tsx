@@ -39,7 +39,7 @@ export default function ProductForm() {
       const res = await productApi.addProd(values, session);
       if (res.error) {
         setError(res.error.message);
-      } 
+      }
     } catch (error: any) {
       setError(error.message);
     }

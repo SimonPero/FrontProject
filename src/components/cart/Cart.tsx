@@ -11,31 +11,7 @@ import {
 } from "@/components/ui/table";
 import UpdateQuantity from "./UpdateQuantity";
 import { useEffect, useState } from "react";
-
-interface IProduct {
-  productID: number;
-  name: string;
-  price: number;
-  description: string;
-  category: string;
-  stock: number;
-}
-
-interface ICart {
-  cartID: number;
-  customerID: number;
-  createdAt: string;
-  updatedAt: string;
-}
-
-interface ICartItem {
-  cartItemID: number;
-  cartID: number;
-  product: IProduct;
-  quantity: number;
-  createdAt: string;
-  updatedAt: string;
-}
+import { ICart, ICartItem } from "@/types/Icart";
 
 interface IAddToCartProps {
   cart: ICart;
@@ -48,7 +24,7 @@ const Cart: React.FC<IAddToCartProps> = ({ items, cart, session }) => {
 
   useEffect(() => {
     const initialQuantities = items.reduce((acc, item) => {
-      acc[item.product.productID] = item.quantity;
+      acc[item.cartItemID] = item.quantity;
       return acc;
     }, {} as { [key: number]: number });
     setQuantities(initialQuantities);
@@ -94,7 +70,7 @@ const Cart: React.FC<IAddToCartProps> = ({ items, cart, session }) => {
                     initialCount={cartItem.quantity}
                     stock={cartItem.product.stock}
                     onCountChange={(newCount: number) =>
-                      updateQuantity(cartItem.product.productID, newCount)
+                      updateQuantity(cartItem.cartItemID, newCount)
                     }
                   />
                 </TableCell>
@@ -109,7 +85,7 @@ const Cart: React.FC<IAddToCartProps> = ({ items, cart, session }) => {
                 <TableCell className="text-right">
                   $
                   {cartItem.product.price *
-                    (quantities[cartItem.product.productID] ||
+                    (quantities[cartItem.cartItemID] ||
                       cartItem.quantity)}
                 </TableCell>
               </TableRow>

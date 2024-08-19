@@ -6,14 +6,15 @@ import CartApi from "@/api/cartApi";
 const cartApi = new CartApi();
 
 interface DeleteProdFromCartProps {
-    prodID: number;
+    prodID: string;
     cartID: number;
     session:any;
 }
 
 export function DeleteFromCartButton({ prodID, cartID, session }: DeleteProdFromCartProps) {
     const handleClick = async () => {
-        await cartApi.deleteProdFromCart(prodID, cartID, session);
+        const intProdID = parseInt(prodID)
+        await cartApi.deleteProdFromCart(intProdID, cartID, session);
     };
 
     return (

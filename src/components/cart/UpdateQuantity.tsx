@@ -3,6 +3,7 @@
 import { ArrowLeftIcon, ArrowRightIcon } from "@heroicons/react/24/outline";
 import { Button } from "../ui/button";
 import { useEffect, useState } from "react";
+
 interface UpdateQuantityProps {
   initialCount: number;
   stock: number;

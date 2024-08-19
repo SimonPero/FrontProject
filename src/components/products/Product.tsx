@@ -7,24 +7,14 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 import ProductApi from '@/api/productApi';
-
-interface ProductProps {
-  category: string;
-  name: string;
-  description: string;
-  size: string;
-  price: number;
-  stock: number;
-  imageUrl: string;
-  id: string;
-}
+import { IProduct } from '@/types/Iprod';
 
 const productApi = new ProductApi();
 
-const Product: React.FC<ProductProps> = async ({ name, description, size, price, stock, imageUrl, id }) => {
+const Product: React.FC<IProduct> = async ({ name, description, size, price, stock, imageUrl, productID }) => {
   const img = await productApi.getImage(imageUrl);
   return (
-    <Card id={id} className="bg-gray-500 mb-8 mt-8">
+    <Card id={productID} className="bg-gray-500 mb-8 mt-8">
       <CardHeader>
         <CardTitle>{name}</CardTitle>
       </CardHeader>
