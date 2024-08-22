@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { Header } from "@/components/Header";
 import { Roboto } from "next/font/google";
+import { Toaster } from "@/components/ui/toaster";
 
 const roboto = Roboto({
   subsets:["latin"],
@@ -23,7 +24,7 @@ export default function RootLayout({
       <body className={roboto.className}>
         <Header />
         {children}
-
+        <Toaster />
         <footer className="bg-red-500">
           <h1>trirtirt</h1>
           <div>talalalala</div>
