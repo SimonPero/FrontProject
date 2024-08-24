@@ -19,6 +19,17 @@ export default class ProductApi {
     return res.json();
   }
 
+  async getDataPages(pageN: number) {
+    const res = await fetch(`${envConfig.apiUrl}/api/products/pages/${pageN}`, {
+      cache: "no-store",
+    });
+    if (!res.ok) {
+      const error = await res.json();
+      throw new Error(error.error);
+    }
+    return res.json();
+  }
+
   async getDataById(id: string, session: any) {
     const headers = await this.getHeaders(session);
     const res = await fetch(`${envConfig.apiUrl}/api/products/${id}`, {
@@ -53,9 +64,13 @@ export default class ProductApi {
     }
   }
 
-  async getDataWithImages() {
-    const products = await this.getData();
-
+  async getDataWithImages(pageN: number = 0) {
+    let products;
+    if (pageN !== 0) {
+      products = await this.getDataPages(pageN);
+    } else {
+      products = await this.getData();
+    }
     const productsWithImages = await Promise.all(
       products.map(async (product: { imageUrl: string }) => {
         const imageUrl = await this.getImage(product.imageUrl);
