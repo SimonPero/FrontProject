@@ -10,7 +10,7 @@ import { IProduct } from '@/types/Iprod';
 const productApi = new ProductApi();
 
 export default async function Page() {
-    const data = await productApi.getDataWithImages();
+    const data = await productApi.getData();
     return (
         <section className="space-y-4 m-5">
             <BackLink />

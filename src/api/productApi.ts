@@ -64,23 +64,6 @@ export default class ProductApi {
     }
   }
 
-  async getDataWithImages(pageN: number = 0) {
-    let products;
-    if (pageN !== 0) {
-      products = await this.getDataPages(pageN);
-    } else {
-      products = await this.getData();
-    }
-    const productsWithImages = await Promise.all(
-      products.map(async (product: { imageUrl: string }) => {
-        const imageUrl = await this.getImage(product.imageUrl);
-        return { ...product, imageUrl };
-      })
-    );
-
-    return productsWithImages;
-  }
-
   async deleteProd(id: string, session: any) {
     const headers = await this.getHeaders(session);
     try {

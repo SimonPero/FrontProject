@@ -4,6 +4,7 @@ import { FormEvent } from 'react';
 import ProductApi from '@/api/productApi';
 import { useSession } from 'next-auth/react';
 import { IProduct } from '@/types/Iprod';
+import Image from 'next/image';
 
 const productApi = new ProductApi();
 
@@ -58,7 +59,7 @@ const ProdModifyForm: React.FC<IProduct> = ({ category, name, description, size,
       <input type="number" name="stock" value={formData.stock} onChange={handleChange} placeholder="Stock" />
       <input type="text" name="description" value={formData.description} onChange={handleChange} placeholder="Description" />
       <input type="file" name="image" onChange={handleChange} />
-      {imageUrl && <img src={imageUrl} alt={description} />}
+      {imageUrl && <Image src={imageUrl} alt={description} />}
       <button className='bg-red-500' type="submit">Submit</button>
     </form>
   );
