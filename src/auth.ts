@@ -1,8 +1,8 @@
-import NextAuth from 'next-auth';
-import GoogleProvider from 'next-auth/providers/google';
-import axios from 'axios';
-import CredentialsProvider from 'next-auth/providers/credentials';
-import UserApi from './api/usersApi';
+import NextAuth from "next-auth";
+import GoogleProvider from "next-auth/providers/google";
+import axios from "axios";
+import CredentialsProvider from "next-auth/providers/credentials";
+import UserApi from "./api/usersApi";
 const userApi = new UserApi();
 
 export const {
@@ -13,12 +13,15 @@ export const {
 } = NextAuth({
   callbacks: {
     async signIn({ account, profile, user }: any) {
-      if (account.provider === 'google') {
-        const response = await axios.post('http://localhost:8080/api/auth/token', {
-          email: profile.email,
-          name: profile.given_name,
-          surname: profile.family_name,
-        });
+      if (account.provider === "google") {
+        const response = await axios.post(
+          "http://localhost:8080/api/auth/token",
+          {
+            email: profile.email,
+            name: profile.given_name,
+            surname: profile.family_name,
+          }
+        );
 
         if (response.data.token) {
           user.token = response.data.token;
@@ -42,7 +45,7 @@ export const {
     },
   },
   session: {
-    strategy: 'jwt',
+    strategy: "jwt",
   },
   providers: [
     GoogleProvider({
@@ -50,18 +53,18 @@ export const {
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
       authorization: {
         params: {
-          prompt: 'consent',
-          access_type: 'offline',
-          response_type: 'code',
+          prompt: "consent",
+          access_type: "offline",
+          response_type: "code",
         },
       },
     }),
     CredentialsProvider({
       credentials: {
-        email: { label: 'Email', type: 'email' },
-        password: { label: 'Password', type: 'password' },
+        email: { label: "Email", type: "email" },
+        password: { label: "Password", type: "password" },
       },
-      async authorize(credentials: any,) {
+      async authorize(credentials: any) {
         if (credentials === null) return null;
         try {
           const data = await userApi.logUser(credentials);
@@ -71,7 +74,7 @@ export const {
               token: data.token,
             };
           } else {
-            throw new Error('Invalid Credentials');
+            throw new Error("Invalid Credentials");
           }
         } catch (error: any) {
           throw new Error(error.message);
@@ -79,4 +82,5 @@ export const {
       },
     }),
   ],
+  trustHost: true,
 });
